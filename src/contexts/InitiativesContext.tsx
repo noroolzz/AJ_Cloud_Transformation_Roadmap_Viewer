@@ -7,6 +7,8 @@ import {
   type ReactNode,
 } from 'react';
 import type { Initiative } from '@/types';
+import { validateInitiatives } from '@/utils/validateInitiatives';
+import { STORAGE_KEYS } from '@/constants/storageKeys';
 
 interface InitiativesContextValue {
   initiatives: Initiative[];
@@ -15,6 +17,26 @@ interface InitiativesContextValue {
 }
 
 const InitiativesContext = createContext<InitiativesContextValue | null>(null);
+
+function loadInitiativesFromStorage(): Initiative[] {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEYS.INITIATIVES);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw) as unknown;
+    const { initiatives } = validateInitiatives(parsed);
+    return initiatives;
+  } catch {
+    return [];
+  }
+}
+
+function saveInitiativesToStorage(initiatives: Initiative[]) {
+  try {
+    localStorage.setItem(STORAGE_KEYS.INITIATIVES, JSON.stringify(initiatives));
+  } catch {
+    // ignore storage errors
+  }
+}
 
 export function InitiativesProvider({ children }: { children: ReactNode }) {
   const [initiatives, setInitiatives] = useState<Initiative[]>([]);
@@ -27,13 +49,31 @@ export function InitiativesProvider({ children }: { children: ReactNode }) {
         if (!res.ok) throw new Error('Failed to load initiatives');
         return res.json();
       })
-      .then((data: Initiative[]) => {
-        setInitiatives(Array.isArray(data) ? data : []);
+      .then((data: unknown) => {
+        const { initiatives: validated, errors: validationErrors } =
+          validateInitiatives(data);
+        if (validated.length === 0 && validationErrors.length > 0) {
+          setError(
+            'Initiative data could not be loaded: invalid or missing required fields (name, phase).'
+          );
+          setInitiatives([]);
+          return;
+        }
+        setInitiatives(validated);
         setError(null);
+        saveInitiativesToStorage(validated);
       })
-      .catch((err) => {
-        setError(err instanceof Error ? err.message : 'Unknown error');
-        setInitiatives([]);
+      .catch(() => {
+        const cached = loadInitiativesFromStorage();
+        if (cached.length > 0) {
+          setInitiatives(cached);
+          setError(null);
+        } else {
+          setError(
+            'Initiatives could not be loaded. Please refresh the page or check that initiatives.json is available.'
+          );
+          setInitiatives([]);
+        }
       })
       .finally(() => setLoading(false));
   }, []);
