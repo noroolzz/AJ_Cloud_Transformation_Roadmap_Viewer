@@ -1,0 +1,113 @@
+[
+  {
+    "id": "init-1",
+    "name": "Cloud Foundation Setup",
+    "owner": "Platform Team",
+    "description": "Establish core cloud landing zone and identity foundations.",
+    "timeline": {
+      "startDate": "2025-01-15",
+      "endDate": "2025-06-30",
+      "phase": "Build"
+    },
+    "cloudProvider": "AWS",
+    "ragStatus": "Green",
+    "workstream": "Infrastructure",
+    "value": "High",
+    "objectives": ["Landing zone", "IAM baseline"],
+    "keyResults": ["AZs configured", "SSO integrated"],
+    "activities": ["Design", "Deploy", "Validate"],
+    "keySuccessFactors": ["Security review", "Documentation"],
+    "dependencies": [],
+    "expectedBenefits": ["Faster project onboarding"],
+    "risks": ["Resource limits"]
+  },
+  {
+    "id": "init-2",
+    "name": "ERP Migration Phase 1",
+    "owner": "Applications Team",
+    "description": "Migrate core ERP modules to cloud-hosted solution.",
+    "timeline": {
+      "startDate": "2025-03-01",
+      "endDate": "2025-12-31",
+      "effortDuration": "10 months",
+      "phase": "Plan"
+    },
+    "cloudProvider": "Azure",
+    "ragStatus": "Amber",
+    "workstream": "Applications",
+    "value": "High",
+    "objectives": ["Lift core modules", "Integrate APIs"],
+    "keyResults": ["3 modules live", "UAT passed"],
+    "activities": ["Assessment", "Migration", "Testing"],
+    "keySuccessFactors": ["Stakeholder sign-off", "Data validation"],
+    "dependencies": ["init-1"],
+    "expectedBenefits": ["Reduced on-prem footprint"],
+    "risks": ["Customizations"]
+  },
+  {
+    "id": "init-3",
+    "name": "Security Controls Baseline",
+    "owner": "Security Team",
+    "description": "Implement cloud security baseline and monitoring.",
+    "timeline": {
+      "startDate": "2025-02-01",
+      "endDate": "2025-08-31",
+      "phase": "Deploy"
+    },
+    "cloudProvider": "AWS",
+    "ragStatus": "Green",
+    "workstream": "Security",
+    "value": "Critical",
+    "objectives": ["CIS benchmarks", "GuardDuty/Sentinel"],
+    "keyResults": ["100% coverage", "Alerts tuned"],
+    "activities": ["Baseline", "Remediate", "Monitor"],
+    "keySuccessFactors": ["Compliance alignment"],
+    "dependencies": ["init-1"],
+    "expectedBenefits": ["Reduced risk", "Audit readiness"],
+    "risks": []
+  },
+  {
+    "id": "init-4",
+    "name": "Data Lake Pilot",
+    "owner": "Data Team",
+    "description": "Stand up data lake for analytics and ML pipelines.",
+    "timeline": {
+      "startDate": "2025-04-01",
+      "endDate": "2025-09-30",
+      "phase": "Plan"
+    },
+    "cloudProvider": "GCP",
+    "ragStatus": "Red",
+    "workstream": "Data",
+    "value": "Medium",
+    "objectives": ["Lake schema", "Ingestion pipelines"],
+    "keyResults": ["Schema v1", "5 sources connected"],
+    "activities": ["Design", "Build", "Ingest"],
+    "keySuccessFactors": ["Data governance"],
+    "dependencies": ["init-1"],
+    "expectedBenefits": ["Unified analytics"],
+    "risks": ["Data quality", "Timeline slip"]
+  },
+  {
+    "id": "init-5",
+    "name": "Operations Runbooks",
+    "owner": "Ops Team",
+    "description": "Automate runbooks and incident response for cloud workloads.",
+    "timeline": {
+      "startDate": "2025-05-01",
+      "endDate": "2025-11-30",
+      "phase": "Stabilize"
+    },
+    "cloudProvider": "Azure",
+    "ragStatus": "Amber",
+    "workstream": "Operations",
+    "value": "Medium",
+    "objectives": ["Runbook library", "Auto-remediation"],
+    "keyResults": ["20 runbooks", "P1 auto-response"],
+    "activities": ["Document", "Automate", "Train"],
+    "keySuccessFactors": ["On-call adoption"],
+    "dependencies": ["init-1", "init-3"],
+    "expectedBenefits": ["Faster MTTR"],
+    "risks": []
+  }
+]

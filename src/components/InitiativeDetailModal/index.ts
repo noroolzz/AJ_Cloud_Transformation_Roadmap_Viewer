@@ -1,0 +1,1 @@
+export { InitiativeDetailModal } from './InitiativeDetailModal';
