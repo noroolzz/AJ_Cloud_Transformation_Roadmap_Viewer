@@ -20,6 +20,7 @@ const mockInitiatives = [
     name: 'Test Initiative',
     owner: 'Test Owner',
     description: 'Test description',
+    timeline: { phase: 'Build' as const },
     cloudProvider: 'AWS' as const,
     ragStatus: 'Green' as const,
     workstream: 'Infrastructure' as const,
